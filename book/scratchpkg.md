@@ -45,7 +45,7 @@ Upgrading single/multiple package(s):
 
 > Note: When upgrading package(s), new dependencies will be installed.
 
-# Removing package(s)
+Removing package(s)
 ```
 # scratch remove pkg1 pkg2 pkg3 pkgN ...
 ```
