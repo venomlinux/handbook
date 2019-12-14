@@ -78,3 +78,11 @@ For normal user, `scratch` will take care of building package(s).
 
 `revdep` is a script to find and fix (rebuild and reinstall pkgs) broken shared library
 linkage. This script is recommended to run after **upgrading** and **removing** packages.
+
+## updateconf
+
+`updateconf` is a tool to update configuration files in `/etc`. This script is recommended
+to run after **upgrading** package(s).
+
+> NOTE: For all tools, run `<tool> -h` or `<tool> --help` to get usage help.
+> Except for `scratch`, run `scratch help` to get usage help.
