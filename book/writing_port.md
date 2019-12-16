@@ -70,18 +70,26 @@ build() {
 - `# description`: Short description for package (**required**)
 - `# homepage`: Url for software webpage
 - `# maintainer`: maintainer name and email
-- `# depends`: All required dependencies, separate with space
+- `# depends`: All required dependencies, space separated
 - `name=`: Package name, need same as port directory's name (**required**)
 - `version=`: Package's version (**required**)
 - `release=`: Package's release version, useful when build script need change with same package version (**required**)
-- `source=()`: Package's source urls, separate with space (**required**)
+- `source=()`: Package's source urls, space separated (**required**)
 - `md5sum=()`: Source's md5sum (**required**)
 - `options=()`: Package's build options, see 'Package options' below for available options
-- `backup=()`: File need backup when upgrading package (without leading with '/')
-- `noextrac=()`t: Specify file no need to extract, separate with space
+- `backup=()`: File need backup when upgrading package, without leading with '/'
+- `noextrac=()`t: Specify file no need to extract, space separated
 - `nostrip=()`: list file to avoid strip, can use regex
+- `build() {}`: all build command should placed in this function (**required**)
+- `$PKG`: fake installation directory
+- `$SRC`: extracted and prepared sources directory
 
-> Note: for `source=()`, use <new-source-name>::<source-url> to save source file with different name.
+> Note: Port's name must be lower-case and cannot contain spaces or hyphens (-). Using sed to correct this is common.
+
+> Note: If upstream uses a timestamp versioning such as 30102014, ensure to use the reversed date, i.e. 20141030
+> (ISO 8601 format). Otherwise it will not appear as a newer version.
+
+> Note: For `source=()`, use <new-source-name>::<source-url> to save source file with different name.
 	
 > Example: source=($name-$version.tar.gz::https://github.com/Rolinh/dfc/archive/v${version}.tar.gz)
 
