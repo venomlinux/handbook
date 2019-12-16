@@ -99,6 +99,7 @@ build() {
 	# remove unused stuff
         rm -r $PKG/usr/share/{doc,locale} $PKG/{usr/share/man,etc/xdg/dfc}/{fr,nl}
 }
+```
 
 Notice theres still empty on `md5sum=()` array. So we gonna use `pkgbuild` to generate
 md5sum. First run `pkgbuild` to fetch sources.
