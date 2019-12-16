@@ -89,7 +89,7 @@ build() {
 > Note: If upstream uses a timestamp versioning such as 30102014, ensure to use the reversed date, i.e. 20141030
 > (ISO 8601 format). Otherwise it will not appear as a newer version.
 
-> Note: For `source=()`, use <new-source-name>::<source-url> to save source file with different name.
+> Note: For `source=()`, use `<new-source-name>::<source-url>` to save source file with different name.
 	
 > Example: source=($name-$version.tar.gz::https://github.com/Rolinh/dfc/archive/v${version}.tar.gz)
 
