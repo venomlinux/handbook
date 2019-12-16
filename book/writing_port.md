@@ -182,7 +182,7 @@ If nothing goes wrong, you will succeed build the package. Then you can install 
 you really need root to install to real system, use sudo.
 
 ```
-$ sudo pkgbuild
+$ sudo pkgbuild -i
 ```
 
 Also you can install using `pkgadd <pkg.spkg.tar.xz>`. By default, fetched source will be in
