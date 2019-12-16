@@ -5,8 +5,8 @@ packages. `pkgbuild` is a bash script that sourcing `spkgbuild` before creating 
 a recipe contains all information and build command on how to build packages.
 
 In this guide i will use `dfc` as example. `dfc` is a commandline tool to displays file system space
-usage using graphs and colors. `dfc` website is https://projects.gw-computing.net/projects/dfc and
-the source tarball is https://projects.gw-computing.net/attachments/download/615/dfc-3.1.1.tar.gz got
+usage using graphs and colors. `dfc` website is `https://projects.gw-computing.net/projects/dfc` and
+the source tarball is `https://projects.gw-computing.net/attachments/download/615/dfc-3.1.1.tar.gz` got
 from the website.
 
 ## Requirement
@@ -65,6 +65,56 @@ build() {
 }
 ```
 
+## spkgbuild format
+
+- `# description`: Short description for package (**required**)
+- `# homepage`: Url for software webpage
+- `# maintainer`: maintainer name and email
+- `# depends`: All required dependencies, separate with space
+- `name=`: Package name, need same as port directory's name (**required**)
+- `version=`: Package's version (**required**)
+- `release=`: Package's release version, useful when build script need change with same package version (**required**)
+- `source=()`: Package's source urls, separate with space (**required**)
+- `md5sum=()`: Source's md5sum (**required**)
+- `options=()`: Package's build options, see 'Package options' below for available options
+- `backup=()`: File need backup when upgrading package (without leading with '/')
+- `noextrac=()`t: Specify file no need to extract, separate with space
+- `nostrip=()`: list file to avoid strip, can use regex
+
+> Note: for `source=()`, use <new-source-name>::<source-url> to save source file with different name.
+	
+> Example: source=($name-$version.tar.gz::https://github.com/Rolinh/dfc/archive/v${version}.tar.gz)
+
+### Package options
+
+This options is set in /etc/scratchpkg.conf for global options:
+```
+OPTIONS=()
+```
+
+For per package, set options in package's spkgbuild.
+```
+options=()
+```
+
+Add ! in front of options to disable it, example for disable strip and remove empty directory in package (per package)
+as follows:
+
+```
+options=(!strip !emptydirs)
+```
+
+Available options:
+
+```
+libtool:     Keep libtool file (*.la) in packages.
+emptydirs:   Keep empty directories in packages.
+strip:       Strip symbols from binaries/libraries.
+zipman:      Compress manual (man and info) pages with gzip.
+buildflags:  Enable buildflags (CFLAGS and CXXFLAGS).
+makeflags:   Enable makeflags (MAKEFLAGS).
+```
+
 ## Edit spkgbuild
 
 Edit `spkgbuild` to insert needed variable, information and build commands. Use your favourite
@@ -102,7 +152,8 @@ build() {
 ```
 
 Notice theres still empty on `md5sum=()` array. So we gonna use `pkgbuild` to generate
-md5sum. First run `pkgbuild` to fetch sources.
+md5sum. First run `pkgbuild` to fetch sources. For depends, i added cmake since dfc use cmake
+to build.
 
 ```
 $ pkgbuild
@@ -131,7 +182,7 @@ md5sum=(26fd905a07078332d98c2806cdd0fc0e)
 After md5sum is generated, insert it to `md5sum=()` array in `spkgbuild`. Ok now spkgbuild is
 complete. Its time to build package. Run `fakeroot pkgbuild` to build it.
 
-> Note: `pkgbuild` required root access to build package to get right root id for files in package
+> Note: `pkgbuild` required root access to build package to get right root id for files in package.
 > But for new port, its recommend using `fakeroot` to build it, incase something is wrong in
 > `spkgbuild`, it will not harm your system.
 
@@ -188,3 +239,52 @@ $ sudo pkgbuild -i
 Also you can install using `pkgadd <pkg.spkg.tar.xz>`. By default, fetched source will be in
 `/var/cache/scratchpkg/sources` and created package will be in `/var/cache/scratchpkg/packages`
 directory. You can modify this location in `scratchpkg` config file, `/etc/scratchpkg.conf`.
+
+## Install script
+
+Install scripts is a shell script contains command need to run before/after install/upgrade/remove packages in system. The
+name of install script is `install`. This install script need to placed in port directory and later will included in
+compressed package.
+
+This script is executed using `sh`. Argument is passed when this script is executed on each operation (install, remove and
+upgrade).
+
+### install:
+```
+$1 : pre-install/post-install
+$2 : version
+```
+
+### upgrade:
+```
+$1 : pre-upgrade/post-upgrade
+$2 : version
+$3 : old version
+```
+
+### remove:
+```
+$1 : pre-remove/post-remove
+$2 : old version
+```
+
+Example of install script for `dbus`:
+
+```
+# package install script
+
+action=$1
+newversion=$2
+oldversion=$3
+
+case $action in
+        pre-install)
+                getent group messagebus >/dev/null || groupadd -g 18 messagebus
+                getent passwd messagebus >/dev/null || useradd -c "D-Bus Message Daemon User" -d /var/run/dbus -u 18 -g messagebus -s /bin/false messagebus
+                ;;
+        post-install)
+                dbus-uuidgen --ensure
+                ;;
+esac
+```
+
