@@ -37,7 +37,7 @@ Chroot into extracted venom's image.
 # mount -vt sysfs sysfs /mnt/venom/sys
 # mount -vt tmpfs tmpfs /mnt/venom/run
 # mkdir -pv /mnt/venom/$(readlink /mnt/venom/dev/shm)
-# cp -L /etc/resolve.conf /mnt/venom/etc/
+# cp -L /etc/resolv.conf /mnt/venom/etc/
 # chroot /mnt/venom /bin/bash
 ```
 
