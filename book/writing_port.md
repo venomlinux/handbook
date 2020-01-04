@@ -46,6 +46,7 @@ The template created as follows:
 ```
 # description   :
 # homepage      :
+# maintainer	:
 # depends       :
 
 name=dfc
@@ -55,7 +56,6 @@ options=()
 noextract=()
 backup=()
 source=()
-md5sum=()
 
 build() {
         cd $name-$version
@@ -75,7 +75,6 @@ build() {
 - `version=`: Package's version (**required**)
 - `release=`: Package's release version, useful when build script need change with same package version (**required**)
 - `source=()`: Package's source urls, space separated (**required**)
-- `md5sum=()`: Source's md5sum (**required**)
 - `options=()`: Package's build options, see 'Package options' below for available options
 - `backup=()`: File need backup when upgrading package, without leading with '/'
 - `noextrac=()`t: Specify file no need to extract, space separated
@@ -121,6 +120,7 @@ strip:       Strip symbols from binaries/libraries.
 zipman:      Compress manual (man and info) pages with gzip.
 buildflags:  Enable buildflags (CFLAGS and CXXFLAGS).
 makeflags:   Enable makeflags (MAKEFLAGS).
+checksum:    Enable checking checksum.
 ```
 
 ## Edit spkgbuild
@@ -137,13 +137,13 @@ Heres is the result of `dfc`'s `spkgbuild`:
 ```
 # description	: Commandline tool to displays file system space usage using graphs and colors
 # homepage	: https://projects.gw-computing.net/projects/dfc
+# maintainer	: Emmett1, emmett1.2miligrams@gmail.com
 # depends	: cmake
 
 name=dfc
 version=3.1.1
 release=1
 source=(https://projects.gw-computing.net/attachments/download/615/dfc-$version.tar.gz)
-md5sum=()
 
 build() {
 	cd $name-$version
@@ -159,12 +159,15 @@ build() {
 }
 ```
 
-Notice theres still empty on `md5sum=()` array. So we gonna use `pkgbuild` to generate
-md5sum. First run `pkgbuild` to fetch sources. For depends, i added cmake since dfc use cmake
-to build.
+After md5sum is generated, insert it to `md5sum=()` array in `spkgbuild`. Ok now spkgbuild is
+complete. Its time to build package. Run `fakeroot pkgbuild` to build it.
+
+> Note: `pkgbuild` required root access to build package to get right root id for files in package.
+> But for new port, its recommend using `fakeroot` to build it, incase something is wrong in
+> `spkgbuild`, it will not harm your system.
 
 ```
-$ pkgbuild
+$ fakeroot pkgbuild
 ==> Downloading 'https://projects.gw-computing.net/attachments/download/615/dfc-3.1.1.tar.gz'.
 --2019-12-16 14:11:54--  https://projects.gw-computing.net/attachments/download/615/dfc-3.1.1.tar.gz
 Resolving projects.gw-computing.net (projects.gw-computing.net)... 37.59.30.58
@@ -176,28 +179,7 @@ Saving to: '/mnt/data/venom/sources/dfc-3.1.1.tar.gz.partial'
 /mnt/data/venom/sources/dfc-     [   <=>                                        ]  51.47K  45.0KB/s    in 1.1s
 
 2019-12-16 14:11:58 (45.0 KB/s) - '/mnt/data/venom/sources/dfc-3.1.1.tar.gz.partial' saved [52709]
-
-==> ERROR: md5sum=() is empty, please provide it.
-```
-
-After fetch source is successful, then run `pkgbuild -g` to generate md5sum.
-
-```
-$ pkgbuild -g
-md5sum=(26fd905a07078332d98c2806cdd0fc0e)
-```
-
-After md5sum is generated, insert it to `md5sum=()` array in `spkgbuild`. Ok now spkgbuild is
-complete. Its time to build package. Run `fakeroot pkgbuild` to build it.
-
-> Note: `pkgbuild` required root access to build package to get right root id for files in package.
-> But for new port, its recommend using `fakeroot` to build it, incase something is wrong in
-> `spkgbuild`, it will not harm your system.
-
-```
-$ fakeroot pkgbuild
-==> Source 'dfc-3.1.1.tar.gz' found.
- -> Unpacking 'dfc-3.1.1.tar.gz'...
+==> Unpacking 'dfc-3.1.1.tar.gz'...
 ==> Start build 'dfc-3.1.1-1'.
 + build
 + cd dfc-3.1.1
