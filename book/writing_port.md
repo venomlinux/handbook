@@ -52,10 +52,10 @@ The template created as follows:
 name=dfc
 version=
 release=1
-options=()
-noextract=()
-backup=()
-source=()
+options=""
+noextract=""
+backup=""
+source=""
 
 build() {
         cd $name-$version
@@ -74,11 +74,11 @@ build() {
 - `name=`: Package name, need same as port directory's name (**required**)
 - `version=`: Package's version (**required**)
 - `release=`: Package's release version, useful when build script need change with same package version (**required**)
-- `source=()`: Package's source urls, space separated (**required**)
-- `options=()`: Package's build options, see 'Package options' below for available options
-- `backup=()`: File need backup when upgrading package, without leading with '/'
-- `noextrac=()`t: Specify file no need to extract, space separated
-- `nostrip=()`: list file to avoid strip, can use regex
+- `source=""`: Package's source urls, space separated (**required**)
+- `options=""`: Package's build options, see 'Package options' below for available options
+- `backup=""`: File need backup when upgrading package, without leading with '/'
+- `noextract=""`: Specify file no need to extract, space separated
+- `nostrip=""`: list file to avoid strip, can use regex
 - `build() {}`: all build command should placed in this function (**required**)
 - `$PKG`: fake installation directory
 - `$SRC`: extracted and prepared sources directory
@@ -88,27 +88,27 @@ build() {
 > Note: If upstream uses a timestamp versioning such as 30102014, ensure to use the reversed date, i.e. 20141030
 > (ISO 8601 format). Otherwise it will not appear as a newer version.
 
-> Note: For `source=()`, use `<new-source-name>::<source-url>` to save source file with different name.
+> Note: For `source=""`, use `<new-source-name>::<source-url>` to save source file with different name.
 	
-> Example: source=($name-$version.tar.gz::https://github.com/Rolinh/dfc/archive/v${version}.tar.gz)
+> Example: source="$name-$version.tar.gz::https://github.com/Rolinh/dfc/archive/v${version}.tar.gz"
 
 ### Package options
 
 This options is set in /etc/scratchpkg.conf for global options:
 ```
-OPTIONS=()
+OPTIONS=""
 ```
 
 For per package, set options in package's spkgbuild.
 ```
-options=()
+options=""
 ```
 
 Add ! in front of options to disable it, example for disable strip and remove empty directory in package (per package)
 as follows:
 
 ```
-options=(!strip !emptydirs)
+options="!strip !emptydirs"
 ```
 
 Available options:
