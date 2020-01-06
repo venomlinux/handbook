@@ -143,7 +143,7 @@ Heres is the result of `dfc`'s `spkgbuild`:
 name=dfc
 version=3.1.1
 release=1
-source=(https://projects.gw-computing.net/attachments/download/615/dfc-$version.tar.gz)
+source="https://projects.gw-computing.net/attachments/download/615/dfc-$version.tar.gz"
 
 build() {
 	cd $name-$version
