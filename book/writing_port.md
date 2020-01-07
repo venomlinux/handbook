@@ -159,12 +159,13 @@ build() {
 }
 ```
 
-After md5sum is generated, insert it to `md5sum=()` array in `spkgbuild`. Ok now spkgbuild is
-complete. Its time to build package. Run `fakeroot pkgbuild` to build it.
+Ok now spkgbuild is complete. Its time to build package.
 
 > Note: `pkgbuild` required root access to build package to get right root id for files in package.
 > But for new port, its recommend using `fakeroot` to build it, incase something is wrong in
 > `spkgbuild`, it will not harm your system.
+
+Now run `fakeroot pkgbuild` inside port's directory to build it.
 
 ```
 $ fakeroot pkgbuild
