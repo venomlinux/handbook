@@ -9,13 +9,13 @@ A comprehensive installation guide for Venom Linux.
 
 ### Getting Started
 Venom Linux provides a few installer images.
-These instsaller images come with a full desktop environment and basic applications configured for that environment.
+These installer images come with a full desktop environment and basic applications configured for that environment.
 MATE, XFCE4, LXDE and LXqt flavours are available. We also provide installers and base images with only Xorg.
-The base image provides a minimal set of packages to install and setup a Venom Linux system.
+The base image provides a minimal set of packages to install and configure a Venom Linux system.
 
 All the installation images can be downloaded from the [Venom Linux Website](http://venomlinux.org/download.html)
 It is advised to verify the md5sum of the downloaded iso file.
-If the md5sum matches you can move forward and either burn the iso image on a CD/DVD or create a bootable USB drive.
+If the md5sum matches you can move forward and either burn the iso image to a CD/DVD, or create a bootable USB drive.
 
 ### Creating a Bootable USB drive on Linux
 Identify your USB device with *fdisk*:

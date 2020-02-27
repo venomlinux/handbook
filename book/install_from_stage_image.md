@@ -1,10 +1,10 @@
 # Venom Installation from staged image
 
-Get venom's image [here](https://sourceforge.net/projects/venomlinux/)
+Get a Venom Linux image [here](https://sourceforge.net/projects/venomlinux/)
 
 ## Preparing partition
 
-Create your parition for venom installation.
+Create a partition to install Venom Linux on.
 
 ```
 # cfdisk
@@ -28,7 +28,7 @@ Extract Venom's image to the mounted location.
 
 ## Enter chroot
 
-Chroot into extracted venom's image.
+Chroot into the extracted venom image.
 
 ```
 # mount -v --bind /dev /mnt/venom/dev
@@ -60,7 +60,7 @@ Configure locales:
 ```
 # vim /etc/locales
 ```
-uncomment required locales then run:
+uncomment required locales, then run:
 ```
 # genlocales
 ```
@@ -70,7 +70,7 @@ Configure root password:
 # passwd
 ```
 
-Add user:
+Add a user:
 ```
 # useradd -m -G users,wheel,audio,video -s /bin/bash <your user>
 ```

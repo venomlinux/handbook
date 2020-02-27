@@ -13,11 +13,11 @@ the source tarball is `https://projects.gw-computing.net/attachments/download/61
 - fakeroot
 - scratchpkg-utils
 
-> Note: Install the dependencies using scratch, if you haven't already.
+> Note: Install the dependencies using `scratch`, if you haven't already.
 
 ## Create local repository
 
-I reccomend creating a local repository, in your home directory.
+I reccommend creating a local repository, in your home directory.
 
 ```
 $ mkdir myports

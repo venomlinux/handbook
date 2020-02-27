@@ -1,7 +1,7 @@
 # scratchpkg
 
 `scratchpkg` is a simple package manager for Venom Linux. 
-`scratchpkg` comes with some main tools, `scratch`, `pkgbuild`, `pkgadd`, `pkgdel`, `revdep`
+`scratchpkg` comes with the following tools: `scratch`, `pkgbuild`, `pkgadd`, `pkgdel`, `revdep`
 and `updateconf`.
 
 ## scratch
