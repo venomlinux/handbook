@@ -1,17 +1,17 @@
 # Venom Installation from staged image
 
-Get venom's image [here](https://sourceforge.net/projects/venomlinux/)
+Get a Venom Linux image [here](https://sourceforge.net/projects/venomlinux/)
 
 ## Preparing partition
 
-Create your parition for venom installation.
+Create a partition to install Venom Linux on.
 
 ```
 # cfdisk
 # mkswap /dev/sda1
 # mkfs.ext4 -L Venom /dev/sda2
 ```
-Create directory to mount created partition then mount it.
+Create a directory to mount the created partition then mount it.
 
 ```
 # mkdir /mnt/venom
@@ -20,7 +20,7 @@ Create directory to mount created partition then mount it.
 
 ## Extract Venom's image
 
-Extract Venom's image to mounted location.
+Extract Venom's image to the mounted location.
 
 ```
 # tar xvJpf venom-rootfs.txz -C /mnt/venom
@@ -28,7 +28,7 @@ Extract Venom's image to mounted location.
 
 ## Enter chroot
 
-Chroot into extracted venom's image.
+Chroot into the extracted venom image.
 
 ```
 # mount -v --bind /dev /mnt/venom/dev
@@ -43,7 +43,7 @@ Chroot into extracted venom's image.
 
 ## Configuring system
 
-Configure hostname, timezone, clock, font, keymap and daemon:
+Configure the system's hostname, timezone, clock, font, keymap and daemon:
 
 ```
 # vim /etc/rc.conf
@@ -60,7 +60,7 @@ Configure locales:
 ```
 # vim /etc/locales
 ```
-uncomment required locales then run:
+uncomment required locales, then run:
 ```
 # genlocales
 ```
@@ -70,16 +70,16 @@ Configure root password:
 # passwd
 ```
 
-Add user:
+Add a user:
 ```
 # useradd -m -G users,wheel,audio,video -s /bin/bash <your user>
 ```
-then configure password for your user:
+then create a password for your user:
 ```
 # passwd <your user>
 ```
 
-Configure bootloader, grub:
+Configure the bootloader, GNU `grub`:
 ```
 # grub-install /dev/sdX
 # grub-mkconfig -o /boot/grub/grub.cfg
@@ -101,7 +101,7 @@ Unmount venom partition you mounted before:
 # umount /mnt/venom
 ```
 
-Then you can reboot now. You should have bootable Venom Linux installed into you drive
+You can restart your machine now, Venom Linux should be bootable.
 ```
 # reboot
 ```

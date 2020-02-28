@@ -1,25 +1,23 @@
 # Writing ports
 
-Venom Linux use `port-like` recipe to create packages. `pkgbuild` and `spkgbuild` is used to create
-packages. `pkgbuild` is a bash script that sourcing `spkgbuild` before creating packages. `spkgbuild`
-a recipe contains all information and build command on how to build packages.
+Venom Linux uses a package format akin to BSD's ports. The `pkgbuild` tool creates packages from a
+`spkgbuild`. A `spkgbuild` is a recipe that contains all metdata relating to a package, and the
+instructions to build the package.
 
-In this guide i will use `dfc` as example. `dfc` is a commandline tool to displays file system space
-usage using graphs and colors. `dfc` website is `https://projects.gw-computing.net/projects/dfc` and
-the source tarball is `https://projects.gw-computing.net/attachments/download/615/dfc-3.1.1.tar.gz` got
-from the website.
+In this guide I will use `dfc` as an example. `dfc` is a commandline tool that displays storage space
+usage using graphs and colors. The website for `dfc` is `https://projects.gw-computing.net/projects/dfc` and
+the source tarball is `https://projects.gw-computing.net/attachments/download/615/dfc-3.1.1.tar.gz`.
 
-## Requirement
+## Requirements
 
 - fakeroot
 - scratchpkg-utils
 
-> Note: Install it using scratch if not installed yet.
+> Note: Install the dependencies using `scratch`, if you haven't already.
 
 ## Create local repository
 
-I'm suggesting you to create a local repository to store all of your own ports. I'm gonna create
-local repository in `$HOME` and `cd` into it.
+I reccommend creating a local repository, in your home directory.
 
 ```
 $ mkdir myports
@@ -30,8 +28,8 @@ $ pwd
 
 ## Create ports template
 
-Theres a tool called `portcreate` in `scratchpkg-utils` package. Use it to create initial
-template for your port then `cd` into its directory. The usage is `portcreate <pkg>`.
+There is a tool called `portcreate` in the `scratchpkg-utils` package. Use it to create an initial
+template for your port, then `cd` into its directory. The usage is `portcreate <pkg>`.
 
 ```
 $ portcreate dfc
@@ -41,7 +39,7 @@ $ pwd
 /home/emmett/myports/dfc
 ```
 
-The template created as follows:
+The template that is created is as follows:
 
 ```
 # description   :
@@ -83,28 +81,28 @@ build() {
 - `$PKG`: fake installation directory
 - `$SRC`: extracted and prepared sources directory
 
-> Note: Port's name must be lower-case and cannot contain spaces or hyphens (-). Using sed to correct this is common.
+> Note: The port's name must be lower-case and cannot contain spaces or hyphens (-). Using sed to correct this is common.
 
 > Note: If upstream uses a timestamp versioning such as 30102014, ensure to use the reversed date, i.e. 20141030
-> (ISO 8601 format). Otherwise it will not appear as a newer version.
+> (ISO 8601 format). Otherwise, the package will not appear as a newer version.
 
-> Note: For `source=""`, use `<new-source-name>::<source-url>` to save source file with different name.
+> Note: For `source=""`, use `<new-source-name>::<source-url>` to save a source file with a different name.
 	
 > Example: source="$name-$version.tar.gz::https://github.com/Rolinh/dfc/archive/v${version}.tar.gz"
 
 ### Package options
 
-This options is set in /etc/scratchpkg.conf for global options:
+For global options, set them in `/etc/scratchpkg.conf`:
 ```
 OPTIONS=""
 ```
 
-For per package, set options in package's spkgbuild.
+If you need to set options for a specific package, set them in the package's spkgbuild.
 ```
 options=""
 ```
 
-Add ! in front of options to disable it, example for disable strip and remove empty directory in package (per package)
+Add a ! in front of an option to disable it. For instance, to disable stripping and removal of empty directors in a package, you would do the following:
 as follows:
 
 ```
@@ -125,14 +123,14 @@ checksum:    Enable checking checksum.
 
 ## Edit spkgbuild
 
-Edit `spkgbuild` to insert needed variable, information and build commands. Use your favourite
+Edit the `spkgbuild` to insert any needed variables, information and build commands. Use your favourite
 text editor to edit it.
 
 ```
 $ vim spkgbuild
 ```
 
-Heres is the result of `dfc`'s `spkgbuild`:
+Here is `dfc`'s `spkgbuild`:
 
 ```
 # description	: Commandline tool to displays file system space usage using graphs and colors
@@ -159,13 +157,12 @@ build() {
 }
 ```
 
-Ok now spkgbuild is complete. Its time to build package.
+The `spkgbuild` is now complete. Now, to build it.
+> Note: The `pkgbuild` tool requires root access to build a package.
+> For new packages, it is recommended to use the `fakeroot` tool to build it. 
+> If you have incorrectly configured your package, no lasting changes will be made.
 
-> Note: `pkgbuild` required root access to build package to get right root id for files in package.
-> But for new port, its recommend using `fakeroot` to build it, incase something is wrong in
-> `spkgbuild`, it will not harm your system.
-
-Now run `fakeroot pkgbuild` inside port's directory to build it.
+Run `fakeroot pkgbuild` inside the port's directory to build it.
 
 ```
 $ fakeroot pkgbuild
@@ -233,12 +230,12 @@ directory. You can modify this location in `scratchpkg` config file, `/etc/scrat
 
 ## Install script
 
-Install scripts is a shell script contains command need to run before/after install/upgrade/remove packages in system. The
-name of install script is `install`. This install script need to placed in port directory and later will included in
-compressed package.
+Install scripts are shell scripts that can be used to run commands upon upgrade, removal or installation. The
+name of the script run on installtion is `install`. The install script needs to be placed in the port's directory. It will
+be included in the compressed package.
 
-This script is executed using `sh`. Argument is passed when this script is executed on each operation (install, remove and
-upgrade).
+This script is executed using `sh`. The following arguments are passed to the install script, 
+based on which action is being used.
 
 ### install:
 ```
@@ -259,7 +256,7 @@ $1 : pre-remove/post-remove
 $2 : old version
 ```
 
-Example of install script for `dbus`:
+An exmaple install script for `dbus`:
 
 ```
 # package install script
