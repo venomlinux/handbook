@@ -11,7 +11,6 @@ the source tarball is `https://projects.gw-computing.net/attachments/download/61
 ## Requirements
 
 - fakeroot
-- scratchpkg-utils
 
 > Note: Install the dependencies using `scratch`, if you haven't already.
 
@@ -28,8 +27,7 @@ $ pwd
 
 ## Create ports template
 
-There is a tool called `portcreate` in the `scratchpkg-utils` package. Use it to create an initial
-template for your port, then `cd` into its directory. The usage is `portcreate <pkg>`.
+Use `portcreate` to create an initial template for your port, then `cd` into its directory. The usage is `portcreate <pkg>`.
 
 ```
 $ portcreate dfc
@@ -43,8 +41,6 @@ The template that is created is as follows:
 
 ```
 # description   :
-# homepage      :
-# maintainer	:
 # depends       :
 
 name=dfc
@@ -66,8 +62,6 @@ build() {
 ## spkgbuild format
 
 - `# description`: Short description for package (**required**)
-- `# homepage`: Url for software webpage
-- `# maintainer`: maintainer name and email
 - `# depends`: All required dependencies, space separated
 - `name=`: Package name, need same as port directory's name (**required**)
 - `version=`: Package's version (**required**)
@@ -134,8 +128,6 @@ Here is `dfc`'s `spkgbuild`:
 
 ```
 # description	: Commandline tool to displays file system space usage using graphs and colors
-# homepage	: https://projects.gw-computing.net/projects/dfc
-# maintainer	: Emmett1, emmett1.2miligrams@gmail.com
 # depends	: cmake
 
 name=dfc
