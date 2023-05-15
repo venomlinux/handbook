@@ -61,7 +61,7 @@ For normal users, `scratch` will take care of building and install packages.
 
 ## pkgadd
 
-`pkgbuild` is a tool to install precompiled packages. The usage is:
+`pkgadd` is a tool to install precompiled packages. The usage is:
 ```
 # pkgadd <pkg>.spkg.tar.xz
 ```
